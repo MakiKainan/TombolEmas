@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <title>TombolEmas</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 60px; }
+    h1 { font-size: 22px; }
+    button { font-size: 20px; padding: 16px 28px; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: default; }
+    #status { margin-top: 20px; color: #555; min-height: 1.4em; }
+  </style>
+</head>
+<body>
+  <h1>TombolEmas</h1>
+  <button id="ambil">Ambil Harga Emas</button>
+  <div id="status">Tekan tombol untuk mengambil harga emas hari ini</div>
+  <script>
+    const { ipcRenderer } = require('electron');
+    const btn = document.getElementById('ambil');
+    const status = document.getElementById('status');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      status.textContent = 'Mengambil data…';
+      try {
+        const savedPath = await ipcRenderer.invoke('scrape');
+        status.textContent = savedPath
+          ? 'PDF tersimpan ✓ (' + savedPath + ')'
+          : 'Dibatalkan';
+      } catch (err) {
+        status.textContent = 'Gagal mengambil data, coba lagi';
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
