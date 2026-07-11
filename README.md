@@ -2,7 +2,7 @@
 
 A single-button Electron app that fetches today's Antam gold prices from
 [logammulia.com](https://www.logammulia.com/id/harga-emas-hari-ini) and saves
-them as a PDF.
+them as PDF.
 
 ## Output
 
